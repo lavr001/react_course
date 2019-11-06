@@ -5,51 +5,46 @@ import Person from './Person/Person';
 class App extends Component {
   state = {
     persons: [
-      {name: 'Roman', age: 28},
-      {name: 'Kosha', age: 26},
-      {name: 'Nika', age: 4}
-    ]
+      {id: 1, name: 'Roman', age: 28},
+      {id: 2, name: 'Kosha', age: 26},
+      {id: 3, name: 'Nika', age: 4}
+    ],
+    show_persons: false
   }
-  switch_name_handler = new_name => {
-    this.setState({
-      persons: [
-        {name: new_name, age: 28},
-        {name: 'Kosha', age: 26},
-        {name: 'Nika', age: 6}
-      ]
-    })
+
+  delete_person_handler = person_index => {
+    const updated_persons = [...this.state.persons];
+    updated_persons.splice(person_index, 1);
+    this.setState({persons: updated_persons});
   }
-  change_name_handler = event => {
-    this.setState({
-      persons: [
-        {name: 'Roman', age: 28},
-        {name: event.target.value, age: 26},
-        {name: 'Nika', age: 6}
-      ]
-    })
+
+  toggle_persons_handler = () => {
+    this.setState({show_persons: !this.state.show_persons})
   }
   render() {
+    let persons = null;
+    if (this.state.show_persons) {
+      persons = (
+        <div>
+          {this.state.persons.map((person, index) => {
+            return <Person
+            click={() => this.delete_person_handler(index)}
+            name={person.name}
+            age={person.age}
+            key={person.id}
+            />
+          })}
+        </div>
+      )
+    }
     return (
       <div className='App'>
-      <h1>Privet I am React App</h1>
-      <p>This is really working!</p>
-      <button
-        onClick={() => this.switch_name_handler('Vladimir')}>Switch Name
-      </button>
-      <Person
-        name={this.state.persons[0].name}
-        age={this.state.persons[0].age}>My hobby is Soccer
-      </Person>
-      <Person
-        name={this.state.persons[1].name}
-        age={this.state.persons[1].age}
-        click={this.switch_name_handler.bind(this, 'Ivan')}
-        changed={this.change_name_handler}
-      />
-      <Person
-        name={this.state.persons[2].name}
-        age={this.state.persons[2].age}
-      />
+        <h1>Privet I am React App</h1>
+        <p>This is really working!</p>
+        <button
+          onClick={this.toggle_persons_handler}>Toggle Persons
+        </button>
+        {persons}
       </div>
     )
   }
