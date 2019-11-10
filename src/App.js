@@ -12,6 +12,26 @@ class App extends Component {
     show_persons: false
   }
 
+  name_change_handler = (event, id) => {
+    //Find the index of the person whose name was changes
+    const person_index = this.state.persons.findIndex(person => person.id === id);
+    //Keep state data immutable, make a copy of a person whose name was changed
+    const person_name_changed = {
+      ...this.state.persons[person_index]
+    }
+    //Update person's name with the value from input
+    person_name_changed.name = event.target.value;
+    //Make a copy of the person's array to keep state immutable
+    const updated_names_persons = [...this.state.persons];
+    //Update person with a name changed in the copied array
+    updated_names_persons[person_index] = person_name_changed;
+    //Update state persons array with a new copied array
+    this.setState({
+      persons: updated_names_persons
+    })
+
+  }
+
   delete_person_handler = person_index => {
     const updated_persons = [...this.state.persons];
     updated_persons.splice(person_index, 1);
@@ -32,6 +52,8 @@ class App extends Component {
             name={person.name}
             age={person.age}
             key={person.id}
+            person_id={person.id}
+            changed={(event) => this.name_change_handler(event, person.id)}
             />
           })}
         </div>
