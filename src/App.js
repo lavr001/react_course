@@ -10,7 +10,7 @@ class App extends Component {
       {id: 3, name: 'Nika', age: 4}
     ],
     show_persons: false
-  }
+  } 
 
   name_change_handler = (event, id) => {
     //Find the index of the person whose name was changes
