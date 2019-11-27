@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import Person from './Person/Person';
+import NavbarTab from './NavbarTab';
 
 class App extends Component {
   state = {
@@ -9,8 +10,9 @@ class App extends Component {
       {id: 2, name: 'Kosha', age: 26},
       {id: 3, name: 'Nika', age: 4}
     ],
-    show_persons: false
-  } 
+    show_persons: false,
+    tabs: ['one', 'two', 'three']
+  }
 
   name_change_handler = (event, id) => {
     //Find the index of the person whose name was changes
@@ -29,7 +31,6 @@ class App extends Component {
     this.setState({
       persons: updated_names_persons
     })
-
   }
 
   delete_person_handler = person_index => {
@@ -41,6 +42,12 @@ class App extends Component {
   toggle_persons_handler = () => {
     this.setState({show_persons: !this.state.show_persons})
   }
+
+  tab_click = event => {
+    event.target.parentNode.parentNode.querySelectorAll('.tab').forEach(tab => tab.classList.remove('on'));
+    event.target.parentNode.classList.add('on');
+  }
+
   render() {
     let persons = null;
     let button_style = {
@@ -55,6 +62,7 @@ class App extends Component {
       boxShadow: '0 2px 3px #ccc',
       transition: 'all .2s ease-in-out',
     }
+
     if (this.state.show_persons) {
       persons = (
         <div>
@@ -73,6 +81,18 @@ class App extends Component {
       button_style.backgroundColor = 'tomato';
     }
 
+    let tabs = (
+      <div>
+        {this.state.tabs.map(tab => {
+          return <NavbarTab
+            tab_name={tab}
+            key={tab}
+            clicked={(event) => this.tab_click(event)}
+          />
+        })}
+      </div>
+    )
+
     let classes = [];
 
     if (this.state.persons.length <= 2) classes.push('tomato');
@@ -80,12 +100,17 @@ class App extends Component {
 
     return (
       <div className='App'>
-        <h1>Privet I am React App</h1>
-        <p className={classes.join(' ')}>This is really working!</p>
-        <button style={button_style}
-          onClick={this.toggle_persons_handler}>Toggle Persons
-        </button>
-        {persons}
+        <aside className='navbar'>
+          {tabs}
+        </aside>
+        <div className='content'>
+          <h1>Privet I am React App</h1>
+          <p className={classes.join(' ')}>This is really working!</p>
+          <button style={button_style}
+            onClick={this.toggle_persons_handler}>Toggle Persons
+          </button>
+          {persons}
+        </div>
       </div>
     )
   }
