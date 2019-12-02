@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './App.css';
+import './App.scss';
 import Person from './Person/Person';
 import NavbarTab from './NavbarTab';
 
@@ -50,18 +50,7 @@ class App extends Component {
 
   render() {
     let persons = null;
-    let button_style = {
-      backgroundColor: '#5cd35c',
-      color: '#fff',
-      border: '1px solid #eee',
-      padding: '10px',
-      cursor: 'pointer',
-      fontSize: '16px',
-      outline: 'none',
-      borderRadius: '50px',
-      boxShadow: '0 2px 3px #ccc',
-      transition: 'all .2s ease-in-out',
-    }
+    let button_style = {};
 
     if (this.state.show_persons) {
       persons = (
@@ -100,17 +89,17 @@ class App extends Component {
 
     return (
       <div className='App'>
-        <aside className='navbar'>
+        <aside>
           {tabs}
         </aside>
-        <div className='content'>
+        <main>
           <h1>Privet I am React App</h1>
           <p className={classes.join(' ')}>This is really working!</p>
           <button style={button_style}
             onClick={this.toggle_persons_handler}>Toggle Persons
           </button>
           {persons}
-        </div>
+        </main>
       </div>
     )
   }
