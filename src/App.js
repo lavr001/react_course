@@ -93,7 +93,7 @@ class App extends Component {
           {tabs}
         </aside>
         <main>
-          <h1>Privet I am React App</h1>
+          <h1>Burger React App</h1>
           <p className={classes.join(' ')}>This is really working!</p>
           <button style={button_style}
             onClick={this.toggle_persons_handler}>Toggle Persons
