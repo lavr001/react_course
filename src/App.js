@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.scss';
 import Person from './Person/Person';
-import NavbarTab from './NavbarTab';
+import NavbarTab from './Navbar/NavbarTab';
 
 class App extends Component {
   state = {
