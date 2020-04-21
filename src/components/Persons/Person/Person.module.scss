@@ -1,4 +1,4 @@
-@import '../vars';
+@import '../../../vars';
 
 .Person {
   width: 60%;
@@ -7,6 +7,7 @@
   box-shadow: 0 2px 3px #ccc;
   padding: 15px;
   text-align: center;
+  background-color: #fff;
   color: $tab_on_color;
   input {
     outline: none;

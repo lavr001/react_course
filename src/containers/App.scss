@@ -1,4 +1,4 @@
-@import 'vars';
+@import '../vars';
 
 * {
   box-sizing: border-box;
@@ -66,15 +66,20 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 85%;
+  width: 100%;
   height: 100%;
-  .tomato {
-    color: tomato;
+  .cockpit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p.tomato {
+      color: red;
+    }
+    p.bold {
+      font-weight: bold;
+    }
   }
-  .bold {
-    font-weight: bold;
-  }
-  button {
+  .cockpit button {
     width: 160px;
     background-color: #5cd35c;
     color: #fff;
@@ -86,7 +91,7 @@ main {
     box-shadow: 0 2px 3px #ccc;
     transition: all .2s ease-in-out;
   }
-  button:hover {
+  .cockpit button:hover {
     transform: scale(1.1);
     cursor: pointer;
   }
