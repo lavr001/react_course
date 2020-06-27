@@ -1,10 +1,16 @@
 import React, {Component} from 'react';
 import './App.scss';
-import Person from './Person/Person';
-import NavbarTab from './Navbar/NavbarTab';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
+// import NavbarTab from './Navbar/NavbarTab';
+// import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log('[App.js constructor]');
+  }
+
   state = {
     persons: [
       {id: 1, name: 'Roman', age: 28},
@@ -13,6 +19,24 @@ class App extends Component {
     ],
     show_persons: false,
     tabs: ['one', 'two', 'three']
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log('[App.js] getDerivedStateFromProps', props);
+    return state;
+  }
+
+  componentDidMount() {
+    console.log('[App.js] componentDidMount');
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('[App.js] shouldComponentUpdate');
+    return true;
+  }
+
+  componentDidUpdate() {
+    console.log('[App.js] componentDidUpdate');
   }
 
   name_change_handler = (event, id) => {
@@ -44,62 +68,46 @@ class App extends Component {
     this.setState({show_persons: !this.state.show_persons})
   }
 
-  tab_click = event => {
-    event.target.parentNode.parentNode.querySelectorAll('.tab').forEach(tab => tab.classList.remove('on'));
-    event.target.parentNode.classList.add('on');
-  }
+  // tab_click = event => {
+  //   event.target.parentNode.parentNode.querySelectorAll('.tab').forEach(tab => tab.classList.remove('on'));
+  //   event.target.parentNode.classList.add('on');
+  // }
 
   render() {
+    console.log('[App.js] render');
     let persons = null;
-    let button_style = {};
 
     if (this.state.show_persons) {
-      persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return <ErrorBoundary key={person.id}>
-            <Person
-              click={() => this.delete_person_handler(index)}
-              name={person.name}
-              age={person.age}
-              person_id={person.id}
-              changed={(event) => this.name_change_handler(event, person.id)}
-            />
-            </ ErrorBoundary>
-          })}
-        </div>
-      )
-      button_style.backgroundColor = 'tomato';
+      persons = <Persons
+            persons={this.state.persons}
+            clicked={this.delete_person_handler}
+            changed={this.name_change_handler} />
     }
 
-    let tabs = (
-      <div>
-        {this.state.tabs.map(tab => {
-          return <NavbarTab
-            tab_name={tab}
-            key={tab}
-            clicked={(event) => this.tab_click(event)}
-          />
-        })}
-      </div>
-    )
-
-    let classes = [];
-
-    if (this.state.persons.length <= 2) classes.push('tomato');
-    if (this.state.persons.length <= 1) classes.push('bold');
+    // let tabs = (
+    //   <div>
+    //     {this.state.tabs.map(tab => {
+    //       return <NavbarTab
+    //         tab_name={tab}
+    //         key={tab}
+    //         clicked={(event) => this.tab_click(event)}
+    //       />
+    //     })}
+    //   </div>
+    // )
 
     return (
       <div className='App'>
-        <aside>
+        {/*<aside>
           {tabs}
-        </aside>
+        </aside>*/}
         <main>
-          <h1>Burger React App</h1>
-          <p className={classes.join(' ')}>This is really working!</p>
-          <button style={button_style}
-            onClick={this.toggle_persons_handler}>Toggle Persons
-          </button>
+          <Cockpit
+            title={this.props.title}
+            show_persons={this.state.show_persons}
+            persons={this.state.persons}
+            clicked={this.toggle_persons_handler}
+          />
           {persons}
         </main>
       </div>
