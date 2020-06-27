@@ -1,6 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-const cockpit = (props) => {
+const Cockpit = (props) => {
+
+  useEffect(() => {
+    console.log('useEffect [Cockpit.js]');
+    setTimeout(() => {
+      alert('Saved Data')
+    }, 1000);
+  }, []);
+
+  //use [] when you need to useEfect ONCE on the initial load
+
   let assigned_classes = [];
   let button_style = {};
 
@@ -10,7 +20,7 @@ const cockpit = (props) => {
 
   return (
     <div className="cockpit">
-      <h1>Burger React App</h1>
+      <h1>{props.title}</h1>
       <p className={assigned_classes.join(' ')}>This is really working!</p>
       <button
         style={button_style}
@@ -20,4 +30,4 @@ const cockpit = (props) => {
   )
 };
 
-export default cockpit;
+export default Cockpit;
