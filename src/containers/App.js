@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './App.scss';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
+import AuthContext from '../context/auth_context';
 // import NavbarTab from './Navbar/NavbarTab';
 // import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
@@ -18,7 +19,9 @@ class App extends Component {
       {id: 3, name: 'Nika', age: 4}
     ],
     show_persons: false,
-    tabs: ['one', 'two', 'three']
+    tabs: ['one', 'two', 'three'],
+    counter: 0,
+    authenticated: false
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -53,9 +56,12 @@ class App extends Component {
     //Update person with a name changed in the copied array
     updated_names_persons[person_index] = person_name_changed;
     //Update state persons array with a new copied array
-    this.setState({
-      persons: updated_names_persons
-    })
+    this.setState((prevState, props) => {
+      return  {
+        persons: updated_names_persons,
+        counter: prevState.counter + 1
+      }
+    });
   }
 
   delete_person_handler = person_index => {
@@ -68,6 +74,10 @@ class App extends Component {
     this.setState({show_persons: !this.state.show_persons})
   }
 
+  login_handler = () => {
+    this.setState({ authenticated: true })
+  }
+
   // tab_click = event => {
   //   event.target.parentNode.parentNode.querySelectorAll('.tab').forEach(tab => tab.classList.remove('on'));
   //   event.target.parentNode.classList.add('on');
@@ -78,10 +88,13 @@ class App extends Component {
     let persons = null;
 
     if (this.state.show_persons) {
-      persons = <Persons
-            persons={this.state.persons}
-            clicked={this.delete_person_handler}
-            changed={this.name_change_handler} />
+      persons = (
+        <Persons
+          persons={this.state.persons}
+          clicked={this.delete_person_handler}
+          changed={this.name_change_handler}
+        />
+      )
     }
 
     // let tabs = (
@@ -102,13 +115,18 @@ class App extends Component {
           {tabs}
         </aside>*/}
         <main>
-          <Cockpit
-            title={this.props.title}
-            show_persons={this.state.show_persons}
-            persons={this.state.persons}
-            clicked={this.toggle_persons_handler}
-          />
-          {persons}
+          <AuthContext.Provider value={{
+            authenticated: this.state.authenticated,
+            login: this.login_handler
+          }} >
+            <Cockpit
+              title={this.props.title}
+              show_persons={this.state.show_persons}
+              persons={this.state.persons}
+              clicked={this.toggle_persons_handler}
+            />
+            {persons}
+          </AuthContext.Provider>
         </main>
       </div>
     )
